@@ -14,7 +14,7 @@ Library to parse `emoji-test.txt`
 ## Installation
 
 ```bash
-composer require sunaoka/emoji-parser
+composer require sunaoka/emoji-utility
 ```
 
 ## Usage
@@ -22,10 +22,10 @@ composer require sunaoka/emoji-parser
 ```php
 <?php
 
-use Sunaoka\EmojiParser\EmojiParser;
+use Sunaoka\EmojiUtility\Parsers\EmojiTest;
 
-$emojiParser = new EmojiParser('emoji-test.txt');
-$data = $emojiParser->parse();
+$parser = new EmojiTest();
+$data = $parser->parse('emoji-test.txt');
 
 print_r($data);
 ```
@@ -62,14 +62,14 @@ see: [Arrays > Predefined Constants > Sorting order flags](https://php.net/array
 ```php
 <?php
 
-use Sunaoka\EmojiParser\EmojiParser;
+use Sunaoka\EmojiUtility\Parsers\EmojiTest;
 
 $options = [
     'sort' => SORT_ASC,
 ];
 
-$emojiParser = new EmojiParser('emoji-test.txt', $options);
-$data = $emojiParser->parse();
+$parser = new EmojiTest();
+$data = $parser->parse('emoji-test.txt', $options);
 ```
 
 ## emoji-test.txt

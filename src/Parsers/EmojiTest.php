@@ -1,50 +1,31 @@
 <?php
 
-namespace Sunaoka\EmojiParser;
+declare(strict_types=1);
+
+namespace Sunaoka\EmojiUtility\Parsers;
 
 use LogicException;
 
-class EmojiParser
+class EmojiTest
 {
-    const URL = 'https://unicode.org/Public/emoji/%s/emoji-test.txt';
-
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var array
-     */
-    private $options = [
-        'sort' => null,
-    ];
-
-    /**
-     * EmojiParser constructor.
-     *
-     * @param string $path path of emoji-test.txt
-     * @param array  $options
-     */
-    public function __construct(string $path, array $options = [])
-    {
-        $this->path = $path;
-        $this->options = array_merge($this->options, $options);
-    }
+    private const URL = 'https://unicode.org/Public/emoji/%s/emoji-test.txt';
 
     /**
      * Parse emoji-test.txt
      *
+     * @param string $path path of emoji-test.txt
+     * @param array{sort?: ?int}  $options
+     *
      * @return array
      */
-    public function parse(): array
+    public function parse(string $path, array $options = []): array
     {
-        $contents = $this->load();
+        $contents = $this->load($path);
 
         $blocks = explode("\n\n", trim($contents));
 
         $result = $this->parseHeader(array_shift($blocks));
-        $result['emoji'] = $this->parseBody($blocks, $result['version']);
+        $result['emoji'] = $this->parseBody($blocks, $result['version'], $options);
 
         return $result;
     }
@@ -65,7 +46,7 @@ class EmojiParser
         return $result;
     }
 
-    private function parseBody(array $blocks, $emojiVersion): array
+    private function parseBody(array $blocks, string $emojiVersion, array $options = []): array
     {
         $result = [];
         $group = null;
@@ -83,10 +64,10 @@ class EmojiParser
                 foreach ($rows as $row) {
                     if ($emojiVersion >= 12.1) {
                         // Format: code points; status # emoji EX.X name
-                        list($codePoint, $status, $emoji, $version, $name) = sscanf($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
+                        [$codePoint, $status, $emoji, $version, $name] = sscanf($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
                     } else {
                         // Format: code points; status # emoji name
-                        list($codePoint, $status, $emoji, $name) = sscanf($row, '%[^;]; %[^#] # %[^ ] %[^$]');
+                        [$codePoint, $status, $emoji, $name] = sscanf($row, '%[^;]; %[^#] # %[^ ] %[^$]');
                         $version = '';
                     }
 
@@ -100,8 +81,8 @@ class EmojiParser
                         'version'    => (float)trim($version),
                     ];
                 }
-                if (! is_null($this->options['sort'])) {
-                    $subgroups = $this->sort($subgroups, 'emoji');
+                if (isset($options['sort'])) {
+                    $subgroups = $this->sort($subgroups, 'emoji', $options['sort']);
                 }
                 $result = array_merge($result, $subgroups);
             }
@@ -110,16 +91,20 @@ class EmojiParser
         return $result;
     }
 
-    private function sort(array $array, string $key): array
+    private function sort(array $array, string $key, int $sortOrder): array
     {
+        $sort = [];
         foreach ($array as $row) {
             $sort[] = $row[$key];
         }
-        array_multisort($sort, $this->options['sort'], $array);
+        array_multisort($sort, $sortOrder, SORT_REGULAR, $array);
         return $array;
     }
 
-    private function getValue($row, $key)
+    /**
+     * @return string|false
+     */
+    private function getValue(string $row, string $key)
     {
         if (strpos($row, $key) !== 0) {
             return false;
@@ -128,12 +113,13 @@ class EmojiParser
         return substr($row, strlen($key) + 1);
     }
 
-    private function load()
+    private function load(string $path): string
     {
-        if (! is_readable($this->path)) {
-            throw new LogicException("{$this->path}: No such file");
+        if (! is_readable($path)) {
+            throw new LogicException("{$path}: No such file");
         }
 
-        return file_get_contents($this->path);
+        /** @var string */
+        return file_get_contents($path);
     }
 }

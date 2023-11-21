@@ -1,0 +1,16 @@
+parameters:
+
+    paths:
+        - src
+        - tests
+
+    level: 9
+
+    checkMissingIterableValueType: false
+
+    editorUrl: 'file://%%file%%:%%line%%'
+
+#    editorUrlTitle: 'file://%%file%%:%%line%%'
+
+    ignoreErrors:
+        - '#Cannot use array destructuring on array\|null#'
