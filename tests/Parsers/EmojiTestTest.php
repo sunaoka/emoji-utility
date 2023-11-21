@@ -9,87 +9,87 @@ use Sunaoka\EmojiUtility\Parsers\EmojiTest;
 
 class EmojiTestTest extends TestCase
 {
-    public function testLoadFail(): void
+    public function test_load_fail(): void
     {
         $this->expectExceptionMessage('fake.txt: No such file');
         $parser = new EmojiTest();
         $parser->parse('fake.txt');
     }
 
-    public function testParse4_0(): void
+    public function test_parse_4_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/4.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/4.0.txt');
         $this->assertCount(2822, $data['emoji']);
     }
 
-    public function testParse5_0(): void
+    public function test_parse_5_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/5.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/5.0.txt');
         $this->assertCount(3377, $data['emoji']);
     }
 
-    public function testParse11_0(): void
+    public function test_parse_11_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/11.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/11.0.txt');
         $this->assertCount(3570, $data['emoji']);
     }
 
-    public function testParse12_0(): void
+    public function test_parse_12_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/12.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt');
         $this->assertCount(3836, $data['emoji']);
     }
 
-    public function testParse12_1(): void
+    public function test_parse_12_1(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/12.1.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.1.txt');
         $this->assertCount(4022, $data['emoji']);
     }
 
-    public function testParse13_0(): void
+    public function test_parse_13_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/13.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/13.0.txt');
         $this->assertCount(4168, $data['emoji']);
     }
 
-    public function testParse13_1(): void
+    public function test_parse_13_1(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/13.1.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/13.1.txt');
         $this->assertCount(4590, $data['emoji']);
     }
 
-    public function testParse14_0(): void
+    public function test_parse_14_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/14.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/14.0.txt');
         $this->assertCount(4702, $data['emoji']);
     }
 
-    public function testParse15_0(): void
+    public function test_parse_15_0(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/15.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/15.0.txt');
         $this->assertCount(4733, $data['emoji']);
     }
 
-    public function testParse15_1(): void
+    public function test_parse_15_1(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/15.1.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/15.1.txt');
         $this->assertCount(5034, $data['emoji']);
     }
 
-    public function testSortNone(): void
+    public function test_sort_none(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/12.0.txt');
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt');
 
         $codePoints = array_map(function($emoji) {
             return $emoji['code_point'];
@@ -110,10 +110,10 @@ class EmojiTestTest extends TestCase
         ], $codePoints);
     }
 
-    public function testSortAsc(): void
+    public function test_sort_asc(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/12.0.txt', ['sort' => SORT_ASC]);
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt', ['sort' => SORT_ASC]);
 
         $codePoints = array_map(function($emoji) {
             return $emoji['code_point'];
@@ -134,10 +134,10 @@ class EmojiTestTest extends TestCase
         ], $codePoints);
     }
 
-    public function testSortDesc(): void
+    public function test_sort_desc(): void
     {
         $parser = new EmojiTest();
-        $data = $parser->parse(dirname(__DIR__) . '/emoji-test/12.0.txt', ['sort' => SORT_DESC]);
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt', ['sort' => SORT_DESC]);
 
         $codePoints = array_map(function($emoji) {
             return $emoji['code_point'];
