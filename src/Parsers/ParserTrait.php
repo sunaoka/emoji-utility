@@ -58,7 +58,7 @@ trait ParserTrait
             }
         }
 
-        throw new InvalidArgumentException('Date and/or Version not found.');
+        throw new InvalidArgumentException('Date and/or Version not found.');  // @codeCoverageIgnore
     }
 
     /**
