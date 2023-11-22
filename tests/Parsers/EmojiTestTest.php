@@ -92,7 +92,7 @@ class EmojiTestTest extends TestCase
         $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt');
 
         $codePoints = array_map(function($emoji) {
-            return $emoji['code_point'];
+            return $emoji['codepoints'];
         }, array_values(array_filter($data['emoji'], function ($emoji) {
             return $emoji['group'] === 'Smileys & Emotion' && $emoji['subgroup'] === 'face-affection';
         })));
@@ -116,7 +116,7 @@ class EmojiTestTest extends TestCase
         $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt', ['sort' => SORT_ASC]);
 
         $codePoints = array_map(function($emoji) {
-            return $emoji['code_point'];
+            return $emoji['codepoints'];
         }, array_values(array_filter($data['emoji'], function ($emoji) {
             return $emoji['group'] === 'Smileys & Emotion' && $emoji['subgroup'] === 'face-affection';
         })));
@@ -140,7 +140,7 @@ class EmojiTestTest extends TestCase
         $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/12.0.txt', ['sort' => SORT_DESC]);
 
         $codePoints = array_map(function($emoji) {
-            return $emoji['code_point'];
+            return $emoji['codepoints'];
         }, array_values(array_filter($data['emoji'], function ($emoji) {
             return $emoji['group'] === 'Smileys & Emotion' && $emoji['subgroup'] === 'face-affection';
         })));

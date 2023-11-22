@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Sunaoka\EmojiUtility\Parsers;
 
-use LogicException;
-
 class EmojiTest
 {
+    use ParserTrait;
+
     private const URL = 'https://unicode.org/Public/emoji/%s/emoji-test.txt';
 
     /**
@@ -64,62 +64,30 @@ class EmojiTest
                 foreach ($rows as $row) {
                     if ($emojiVersion >= 12.1) {
                         // Format: code points; status # emoji EX.X name
-                        [$codePoint, $status, $emoji, $version, $name] = sscanf($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
+                        [$codePoints, $status, $emoji, $version, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
                     } else {
                         // Format: code points; status # emoji name
-                        [$codePoint, $status, $emoji, $name] = sscanf($row, '%[^;]; %[^#] # %[^ ] %[^$]');
-                        $version = '';
+                        [$codePoints, $status, $emoji, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] %[^$]');
+                        $version = null;
                     }
 
                     $subgroups[] = [
                         'group'      => $group,
                         'subgroup'   => $subgroup,
-                        'code_point' => trim($codePoint),
-                        'status'     => trim($status),
-                        'emoji'      => trim($emoji),
-                        'name'       => trim($name),
-                        'version'    => (float)trim($version),
+                        'codepoints' => $codePoints,
+                        'status'     => $status,
+                        'emoji'      => $emoji,
+                        'name'       => $name,
+                        'version'    => $version === null ? (float)$version : null,
                     ];
                 }
                 if (isset($options['sort'])) {
                     $subgroups = $this->sort($subgroups, 'emoji', $options['sort']);
                 }
-                $result = array_merge($result, $subgroups);
+                $result[] = $subgroups;
             }
         }
 
-        return $result;
-    }
-
-    private function sort(array $array, string $key, int $sortOrder): array
-    {
-        $sort = [];
-        foreach ($array as $row) {
-            $sort[] = $row[$key];
-        }
-        array_multisort($sort, $sortOrder, SORT_REGULAR, $array);
-        return $array;
-    }
-
-    /**
-     * @return string|false
-     */
-    private function getValue(string $row, string $key)
-    {
-        if (strpos($row, $key) !== 0) {
-            return false;
-        }
-
-        return substr($row, strlen($key) + 1);
-    }
-
-    private function load(string $path): string
-    {
-        if (! is_readable($path)) {
-            throw new LogicException("{$path}: No such file");
-        }
-
-        /** @var string */
-        return file_get_contents($path);
+        return array_merge(...$result);
     }
 }
