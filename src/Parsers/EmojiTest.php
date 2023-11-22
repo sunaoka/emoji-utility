@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Sunaoka\EmojiUtility\Parsers;
 
+/**
+ * @template TOptions of array{sort?: ?int}
+ */
 class EmojiTest
 {
     use ParserTrait;
 
-    private const URL = 'https://unicode.org/Public/emoji/%s/emoji-test.txt';
+    public const URL = 'https://unicode.org/Public/emoji/%s/emoji-test.txt';
 
     /**
      * Parse emoji-test.txt
      *
-     * @param string $path path of emoji-test.txt
-     * @param array{sort?: ?int}  $options
+     * @param string   $path path of emoji-test.txt
+     * @param TOptions $options
      *
-     * @return array
+     * @return array{date: string, version: string, url: string, emoji: array<int, array{group: string, subgroup: string, codepoints: string, status: string, emoji: string, name: string, version: string}>}
      */
     public function parse(string $path, array $options = []): array
     {
@@ -30,26 +33,29 @@ class EmojiTest
         return $result;
     }
 
+    /**
+     * @return array{date: string, version: string, url: string}
+     */
     private function parseHeader(string $block): array
     {
-        $result = [];
         $rows = explode("\n", $block);
-        foreach ($rows as $row) {
-            if (($value = $this->getValue($row, '# Date:')) !== false) {
-                $result['date'] = $value;
-            }
-            if (($value = $this->getValue($row, '# Version:')) !== false) {
-                $result['version'] = $value;
-                $result['url'] = sprintf(self::URL, $value);
-            }
-        }
+
+        $result = $this->getHeader($rows);
+        $result['url'] = sprintf(self::URL, $result['version']);
+
         return $result;
     }
 
+    /**
+     * @param string[] $blocks
+     * @param TOptions $options
+     *
+     * @return array<int, array{group: string, subgroup: string, codepoints: string, status: string, emoji: string, name: string, version: string}>
+     */
     private function parseBody(array $blocks, string $emojiVersion, array $options = []): array
     {
         $result = [];
-        $group = null;
+        $group = '';
         foreach ($blocks as $block) {
             $rows = explode("\n", trim($block));
 
@@ -62,23 +68,23 @@ class EmojiTest
                 array_shift($rows);
                 $subgroups = [];
                 foreach ($rows as $row) {
-                    if ($emojiVersion >= 12.1) {
+                    if (version_compare($emojiVersion, '12.1') >= 0) {
                         // Format: code points; status # emoji EX.X name
-                        [$codePoints, $status, $emoji, $version, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
+                        [$codepoints, $status, $emoji, $version, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
                     } else {
                         // Format: code points; status # emoji name
-                        [$codePoints, $status, $emoji, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] %[^$]');
-                        $version = null;
+                        [$codepoints, $status, $emoji, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] %[^$]');
+                        $version = '';
                     }
 
                     $subgroups[] = [
                         'group'      => $group,
                         'subgroup'   => $subgroup,
-                        'codepoints' => $codePoints,
+                        'codepoints' => $codepoints,
                         'status'     => $status,
                         'emoji'      => $emoji,
                         'name'       => $name,
-                        'version'    => $version === null ? (float)$version : null,
+                        'version'    => $version,
                     ];
                 }
                 if (isset($options['sort'])) {
