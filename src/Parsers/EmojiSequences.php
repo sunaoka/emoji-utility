@@ -47,30 +47,30 @@ class EmojiSequences
         $result = [];
 
         foreach ($rows as $row) {
-            if ($this->isEmptyLine($row)) {
+            if (Utility::isEmptyLine($row)) {
                 continue;
             }
 
             switch ($emojiVersion) {
                 case '2.0':
                     // Format: codepoints ; # (sequence) description
-                    [$codepoints, $emoji, $name] = $this->scan($row, '%[^#] # (%[^)]) %[^$]');
+                    [$codepoints, $emoji, $name] = Utility::scan($row, '%[^#] # (%[^)]) %[^$]');
                     $type = '';
                     $version = '';
                     break;
 
                 case '3.0':
                     // Format: code_point(s) ; type_field # version [count] name(s)
-                    [$codepoints, $type, $version, , $emoji, $name] = $this->scan($row, '%[^;]; %[^#] # %s [%d] (%[^)]) %[^$]');
+                    [$codepoints, $type, $version, , $emoji, $name] = Utility::scan($row, '%[^;]; %[^#] # %s [%d] (%[^)]) %[^$]');
                     break;
 
                 default:
                     // Format: code_point(s) ; type_field ; description # comments
-                    [$codepoints, $type, $name, $version, , $emoji] = $this->scan($row, '%[^;] ; %[^;] ; %[^#] #%s [%d] (%[^)])');
+                    [$codepoints, $type, $name, $version, , $emoji] = Utility::scan($row, '%[^;] ; %[^;] ; %[^#] #%s [%d] (%[^)])');
             }
 
             if (str_contains($codepoints, '..')) {
-                foreach ($this->range(...explode('..', $codepoints)) as $points) {
+                foreach (Utility::range(...explode('..', $codepoints)) as $points) {
                     $codepoints = strtoupper(dechex($points));
                     $result[] = $this->entity($codepoints, $type, null, $name, $version);
                 }

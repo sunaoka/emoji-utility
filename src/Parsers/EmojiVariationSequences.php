@@ -54,11 +54,11 @@ class EmojiVariationSequences
         $result = [];
 
         foreach ($rows as $row) {
-            if ($this->isEmptyLine($row)) {
+            if (Utility::isEmptyLine($row)) {
                 continue;
             }
 
-            [$codepoints, $variation, $style, $version, $name] = $this->scan($row, '%s %s ; %[^;];  # (%[^)]) %[^$]');
+            [$codepoints, $variation, $style, $version, $name] = Utility::scan($row, '%s %s ; %[^;];  # (%[^)]) %[^$]');
             $result[] = [
                 'codepoints' => "{$codepoints} {$variation}",
                 'variation'  => $variation,
