@@ -70,10 +70,10 @@ class EmojiTest
                 foreach ($rows as $row) {
                     if (version_compare($emojiVersion, '12.1') >= 0) {
                         // Format: code points; status # emoji EX.X name
-                        [$codepoints, $status, $emoji, $version, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
+                        [$codepoints, $status, $emoji, $version, $name] = Utility::scan($row, '%[^;]; %[^#] # %[^ ] E%[^ ] %[^$]');
                     } else {
                         // Format: code points; status # emoji name
-                        [$codepoints, $status, $emoji, $name] = $this->scan($row, '%[^;]; %[^#] # %[^ ] %[^$]');
+                        [$codepoints, $status, $emoji, $name] = Utility::scan($row, '%[^;]; %[^#] # %[^ ] %[^$]');
                         $version = '';
                     }
 

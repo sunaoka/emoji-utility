@@ -1,10 +1,10 @@
 # Parsing unicode emoji text file using PHP
 
-[![Latest Stable Version](https://poser.pugx.org/sunaoka/emoji-utility"/v/stable)](https://packagist.org/packages/sunaoka/emoji-utility")
-[![License](https://poser.pugx.org/sunaoka/emoji-utility"/license)](https://packagist.org/packages/sunaoka/emoji-utility")
-[![PHP](https://img.shields.io/packagist/php-v/sunaoka/emoji-utility")](composer.json)
-[![Test](https://github.com/sunaoka/emoji-utility"/actions/workflows/test.yml/badge.svg)](https://github.com/sunaoka/emoji-utility"/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/sunaoka/emoji-utility"/branch/develop/graph/badge.svg)](https://codecov.io/gh/sunaoka/emoji-utility")
+[![Latest Stable Version](https://poser.pugx.org/sunaoka/emoji-utility/v/stable)](https://packagist.org/packages/sunaoka/emoji-utility)
+[![License](https://poser.pugx.org/sunaoka/emoji-utility/license)](https://packagist.org/packages/sunaoka/emoji-utility)
+[![PHP](https://img.shields.io/packagist/php-v/sunaoka/emoji-utility)](composer.json)
+[![Test](https://github.com/sunaoka/emoji-utility/actions/workflows/test.yml/badge.svg)](https://github.com/sunaoka/emoji-utility/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/sunaoka/emoji-utility/branch/develop/graph/badge.svg)](https://codecov.io/gh/sunaoka/emoji-utility)
 
 ---
 

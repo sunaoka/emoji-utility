@@ -10,17 +10,6 @@ use LogicException;
 trait ParserTrait
 {
     /**
-     * @return string[]
-     */
-    protected function scan(string $string, string $format): array
-    {
-        /** @var string[] $result */
-        $result = sscanf($string, $format);
-
-        return array_map('trim', $result);
-    }
-
-    /**
      * @template T
      *
      * @param array<int, T> $array
@@ -69,7 +58,7 @@ trait ParserTrait
             }
         }
 
-        throw new InvalidArgumentException('Date and/or Version not found.');
+        throw new InvalidArgumentException('Date and/or Version not found.');  // @codeCoverageIgnore
     }
 
     /**
@@ -92,23 +81,5 @@ trait ParserTrait
 
         /** @var string */
         return file_get_contents($path);
-    }
-
-    protected function isEmptyLine(string $row): bool
-    {
-        $row = trim($row);
-        return $row === '' || str_starts_with($row, '#');
-    }
-
-
-    /**
-     * Generates an array of integers from start to end (inclusive) using their hexadecimal representation.
-     *
-     * @return int[]
-     */
-    private function range(string $start, string $end): array
-    {
-        /** @var int[] */
-        return range(hexdec($start), hexdec($end));
     }
 }
