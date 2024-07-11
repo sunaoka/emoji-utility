@@ -14,7 +14,9 @@ class Utility
         /** @var string[] $result */
         $result = sscanf($string, $format);
 
-        return array_map('trim', $result);
+        return array_map(static function ($string) {
+            return trim((string)$string);
+        }, $result);
     }
 
     public static function isEmptyLine(string $row): bool
