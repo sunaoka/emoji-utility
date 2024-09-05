@@ -50,7 +50,7 @@ trait ParserTrait
 
             // emoji-variation-sequences.txt 14.0 or later
             if (($value = $this->getValue($row, '# Used with Emoji Version')) !== false) {
-                $result['version'] = (string)strstr($value, ' ', true);
+                $result['version'] = (string) strstr($value, ' ', true);
             }
 
             if (isset($result['date'], $result['version'])) {
