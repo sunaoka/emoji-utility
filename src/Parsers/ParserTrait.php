@@ -10,7 +10,7 @@ use LogicException;
 trait ParserTrait
 {
     /**
-     * @template T
+     * @template T of array
      *
      * @param array<int, T> $array
      *
