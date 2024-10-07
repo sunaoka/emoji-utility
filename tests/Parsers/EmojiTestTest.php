@@ -218,6 +218,26 @@ class EmojiTestTest extends TestCase
         self::assertCount(5034, $data['emoji']);
     }
 
+    public function test_parse_16_0(): void
+    {
+        $parser = new EmojiTest();
+        $data = $parser->parse(dirname(__DIR__) . '/data/emoji-test/16.0.txt');
+
+        self::assertSame('2024-08-14, 23:51:54 GMT', $data['date']);
+        self::assertSame(sprintf(EmojiTest::URL, $data['version']), $data['url']);
+        self::assertSame('16.0', $data['version']);
+        self::assertSame([
+            'group'      => 'Smileys & Emotion',
+            'subgroup'   => 'face-smiling',
+            'codepoints' => '1F600',
+            'status'     => 'fully-qualified',
+            'emoji'      => '😀',
+            'name'       => 'grinning face',
+            'version'    => '1.0',
+        ], $data['emoji'][0]);
+        self::assertCount(5042, $data['emoji']);
+    }
+
     public function test_sort_none(): void
     {
         $parser = new EmojiTest();

@@ -76,6 +76,7 @@ $data = $parser->parse('emoji-test.txt', $options);
 
 | Version | URL                                                  |
 | ------: | ---------------------------------------------------- |
+|    16.0 | https://unicode.org/Public/emoji/16.0/emoji-test.txt |
 |    15.1 | https://unicode.org/Public/emoji/15.1/emoji-test.txt |
 |    15.0 | https://unicode.org/Public/emoji/15.0/emoji-test.txt |
 |    14.0 | https://unicode.org/Public/emoji/14.0/emoji-test.txt |
