@@ -21,7 +21,7 @@ class Emoji
 
         $result = [];
         foreach ($codepoints as $codepoint) {
-            $result[] = self::codePointsToUTF8String((int)hexdec($codepoint));
+            $result[] = self::codePointsToUTF8String((int) hexdec($codepoint));
         }
 
         return implode('', $result);

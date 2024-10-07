@@ -15,7 +15,7 @@ class Utility
         $result = sscanf($string, $format);
 
         return array_map(static function ($string) {
-            return trim((string)$string);
+            return trim((string) $string);
         }, $result);
     }
 
